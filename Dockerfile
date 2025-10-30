@@ -23,8 +23,9 @@ WORKDIR /var/www/html
 RUN a2enmod rewrite
 COPY .htaccess /var/www/html/.htaccess
 
-# File permissions set karo
-RUN chown -R www-data:www-data /var/www/html \
+# Pehle backups directory create karo, phir permissions set karo
+RUN mkdir -p /var/www/html/backups \
+    && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 777 /var/www/html/backups
 
