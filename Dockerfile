@@ -16,26 +16,28 @@ RUN apt-get update && apt-get install -y \
 # Composer install karo
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# PHP configuration for large files
+RUN echo "upload_max_filesize = 2000M" >> /usr/local/etc/php/php.ini \
+    && echo "post_max_size = 2000M" >> /usr/local/etc/php/php.ini \
+    && echo "memory_limit = 512M" >> /usr/local/etc/php/php.ini \
+    && echo "max_execution_time = 300" >> /usr/local/etc/php/php.ini \
+    && echo "max_input_time = 300" >> /usr/local/etc/php/php.ini \
+    && echo "display_errors = Off" >> /usr/local/etc/php/php.ini \
+    && echo "log_errors = On" >> /usr/local/etc/php/php.ini
+
 # Working directory set karo
 WORKDIR /var/www/html
 
 # Apache configuration
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers
 COPY .htaccess /var/www/html/.htaccess
-
-# Pehle backups directory create karo, phir permissions set karo
-RUN mkdir -p /var/www/html/backups \
-    && chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
-    && chmod -R 777 /var/www/html/backups
 
 # Application files copy karo
 COPY . .
 
-# File permissions for data files
-RUN touch users.json bot_stats.json popular_searches.json movies.csv \
-    && chmod 666 users.json bot_stats.json popular_searches.json movies.csv \
-    && chmod 777 backups
+# File permissions set karo
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
 EXPOSE 80
 
