@@ -1,4 +1,19 @@
 <?php
+// Error logging enable karo
+error_log("TadkaMovieBot starting...");
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/error.log');
+
+// Render.com specific setup
+if (getenv('RENDER')) {
+    $_ENV = getenv();
+    error_log("Running on Render.com environment");
+}
+
+// Enable error reporting based on environment
+require_once 'config.php';
+
 // Render.com specific setup
 if (getenv('RENDER')) {
     // Render pe hum environment variables use karenge
