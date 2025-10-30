@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      - ENVIRONMENT=production
+      - BOT_TOKEN=${BOT_TOKEN}
+      - CHANNEL_ID=${CHANNEL_ID}
+      - GROUP_CHANNEL_ID=${GROUP_CHANNEL_ID}
+      - BACKUP_CHANNEL_ID=${BACKUP_CHANNEL_ID}
+      - BOT_ID=${BOT_ID}
+      - BOT_USERNAME=${BOT_USERNAME}
+      - OWNER_ID=${OWNER_ID}
+      - APP_API_ID=${APP_API_ID}
+      - APP_API_HASH=${APP_API_HASH}
+      - GOOGLE_DRIVE_CLIENT_ID=${GOOGLE_DRIVE_CLIENT_ID}
+      - GOOGLE_DRIVE_CLIENT_SECRET=${GOOGLE_DRIVE_CLIENT_SECRET}
+      - GOOGLE_DRIVE_REFRESH_TOKEN=${GOOGLE_DRIVE_REFRESH_TOKEN}
+      - GOOGLE_DRIVE_FOLDER_ID=${GOOGLE_DRIVE_FOLDER_ID}
+    volumes:
+      - ./data:/var/www/html/data
+    restart: unless-stopped

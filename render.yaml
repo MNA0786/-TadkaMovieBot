@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: tadkamoviebot
+    env: docker
+    docker:
+      dockerfile: Dockerfile
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: BOT_TOKEN
+        fromSecret: BOT_TOKEN
+      - key: CHANNEL_ID
+        fromSecret: CHANNEL_ID
+      - key: GROUP_CHANNEL_ID  
+        fromSecret: GROUP_CHANNEL_ID
+      - key: BACKUP_CHANNEL_ID
+        fromSecret: BACKUP_CHANNEL_ID
+      - key: BOT_ID
+        fromSecret: BOT_ID
+      - key: BOT_USERNAME
+        fromSecret: BOT_USERNAME
+      - key: OWNER_ID
+        fromSecret: OWNER_ID
+      - key: APP_API_ID
+        fromSecret: APP_API_ID
+      - key: APP_API_HASH
+        fromSecret: APP_API_HASH
+      - key: GOOGLE_DRIVE_CLIENT_ID
+        fromSecret: GOOGLE_DRIVE_CLIENT_ID
+      - key: GOOGLE_DRIVE_CLIENT_SECRET
+        fromSecret: GOOGLE_DRIVE_CLIENT_SECRET
+      - key: GOOGLE_DRIVE_REFRESH_TOKEN
+        fromSecret: GOOGLE_DRIVE_REFRESH_TOKEN
+      - key: GOOGLE_DRIVE_FOLDER_ID
+        fromSecret: GOOGLE_DRIVE_FOLDER_ID
