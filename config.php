@@ -29,6 +29,8 @@ class Config {
             'GOOGLE_DRIVE_FOLDER_ID' => $_ENV['GOOGLE_DRIVE_FOLDER_ID'] ?? '',
             'MAINTENANCE_MODE' => $_ENV['MAINTENANCE_MODE'] ?? 'false'
         ];
+        
+        error_log("Config loaded: " . json_encode(array_keys(self::$config)));
     }
 }
 ?>
