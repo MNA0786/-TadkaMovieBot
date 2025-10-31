@@ -37,6 +37,14 @@ define('GOOGLE_DRIVE_CLIENT_SECRET', Config::get('GOOGLE_DRIVE_CLIENT_SECRET', '
 define('GOOGLE_DRIVE_REFRESH_TOKEN', Config::get('GOOGLE_DRIVE_REFRESH_TOKEN', ''));
 define('GOOGLE_DRIVE_FOLDER_ID', Config::get('GOOGLE_DRIVE_FOLDER_ID', ''));
 
+// ✅ DEBUG CODE YAHAN ADD KARO
+error_log("🎯 GOOGLE DRIVE CONFIG DEBUG START");
+error_log("🔑 CLIENT_ID: " . (GOOGLE_DRIVE_CLIENT_ID ? GOOGLE_DRIVE_CLIENT_ID : "❌ NOT SET"));
+error_log("🔐 CLIENT_SECRET: " . (GOOGLE_DRIVE_CLIENT_SECRET ? "✅ SET" : "❌ NOT SET")); 
+error_log("🔄 REFRESH_TOKEN: " . (GOOGLE_DRIVE_REFRESH_TOKEN ? "✅ SET" : "❌ NOT SET"));
+error_log("📁 FOLDER_ID: " . (GOOGLE_DRIVE_FOLDER_ID ? GOOGLE_DRIVE_FOLDER_ID : "Not Set"));
+error_log("🎯 GOOGLE DRIVE CONFIG DEBUG END");
+
 // ==============================
 // FILE CONFIG
 // ==============================
@@ -130,14 +138,37 @@ class GoogleDriveService {
     private $access_token;
     
     public function __construct() {
+        // ✅ CONSTRUCTOR DEBUG
+        error_log("🚀 GoogleDriveService Constructor Called");
+        error_log("🔑 CLIENT_ID: " . GOOGLE_DRIVE_CLIENT_ID);
+        error_log("🔐 CLIENT_SECRET: " . (GOOGLE_DRIVE_CLIENT_SECRET ? "Present" : "MISSING"));
+        error_log("🔄 REFRESH_TOKEN: " . (GOOGLE_DRIVE_REFRESH_TOKEN ? substr(GOOGLE_DRIVE_REFRESH_TOKEN, 0, 20) . "..." : "MISSING"));
+        
         $this->access_token = $this->getAccessToken();
+        
+        error_log("🔑 ACCESS_TOKEN: " . ($this->access_token ? "✅ Received" : "❌ Failed"));
     }
     
     private function getAccessToken() {
+        error_log("🔄 getAccessToken() called");
+        
         if (empty(GOOGLE_DRIVE_CLIENT_ID) || empty(GOOGLE_DRIVE_CLIENT_SECRET) || empty(GOOGLE_DRIVE_REFRESH_TOKEN)) {
+            error_log("❌ MISSING CREDENTIALS:");
+            error_log("   CLIENT_ID: " . (empty(GOOGLE_DRIVE_CLIENT_ID) ? "MISSING" : "OK"));
+            error_log("   CLIENT_SECRET: " . (empty(GOOGLE_DRIVE_CLIENT_SECRET) ? "MISSING" : "OK"));
+            error_log("   REFRESH_TOKEN: " . (empty(GOOGLE_DRIVE_REFRESH_TOKEN) ? "MISSING" : "OK"));
             throw new Exception("Google Drive configuration missing");
         }
         
+        // Rest of your existing getAccessToken() code yahi rahega
+        $url = 'https://oauth2.googleapis.com/token';
+        $data = [
+            'client_id' => GOOGLE_DRIVE_CLIENT_ID,
+            'client_secret' => GOOGLE_DRIVE_CLIENT_SECRET,
+            'refresh_token' => GOOGLE_DRIVE_REFRESH_TOKEN,
+            'grant_type' => 'refresh_token'
+        ];
+    
         $url = 'https://oauth2.googleapis.com/token';
         $data = [
             'client_id' => GOOGLE_DRIVE_CLIENT_ID,
@@ -1086,8 +1117,15 @@ function download_telegram_file($file_id, $destination) {
 // MAIN GOOGLE DRIVE HANDLER
 // ==============================
 function handle_google_drive_download($chat_id, $gdrive_url, $user_id = null) {
+    // ✅ MAIN HANDLER DEBUG
+    error_log("📥 handle_google_drive_download() called");
+    error_log("   Chat ID: " . $chat_id);
+    error_log("   GDrive URL: " . $gdrive_url);
+    error_log("   User ID: " . $user_id);
+    
     // Security checks
     if (is_banned($user_id)) {
+        error_log("❌ User banned: " . $user_id);
         sendMessage($chat_id, "❌ You are banned from using this bot.");
         return;
     }
@@ -1098,6 +1136,7 @@ function handle_google_drive_download($chat_id, $gdrive_url, $user_id = null) {
     }
     
     try {
+        // ... rest of the existing function code yahi rahega
         if (!is_google_drive_url($gdrive_url)) {
             sendMessage($chat_id, "❌ Invalid Google Drive URL!\n\n💡 Example: https://drive.google.com/file/d/1ABC123xyz/view");
             return;
